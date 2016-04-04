@@ -1,1 +1,1 @@
-dbus-interface-list
+dbus-introspect

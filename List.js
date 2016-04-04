@@ -9,15 +9,32 @@ function List( busConnection, destination){
 	  messager= Messager( busConnection),
 	  subject= rxjs.BehaviorSubject()
 	return rxjs.Observable.create(function( observer){
-		function consider( reply){
-			observer.next(reply)
-			return Promise.all([])
+		function explore(introspection, path){
 		}
-		var
-		  msg= introspect( destination, "/"),
-		  reply= messager(msg),
-		  process= reply.then(m=> m.body[0]).then(xml2js).then(consider)
-		process.catch(observer.error)
+		function ask( path){
+			var
+			  msg= introspect( destination, path),
+			  reply= messager(msg),
+			  process= reply.then(function( m){
+				var
+				  str= m.body[0],
+				  introspection= xml2js(str),
+				  named= introspection.then(function(introspect){
+					// fire off followups
+					var done= explore(path, introspect)
+
+					// publish result
+					var result= [path, introspect]
+					observer.next(result)
+
+					// return when followups finish
+					return done && Promise.all(done) && true
+				  })
+			})
+			return process
+		}
+		var root= ask( "/")
+		root.catch(observer.error)
 	})
 }
 
