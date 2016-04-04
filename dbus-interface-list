@@ -1,0 +1,15 @@
+#!/usr/bin/env node
+var
+  dbus= require( "dbus-native"),
+  hello= require("./msg/hello"),
+  List= require("./List")
+
+var
+  conn= dbus.createConnection()
+
+conn.message(hello())
+
+List( conn, "org.PulseAudio1").subscribe(function(i){
+	console.log("I", i)
+})
+
