@@ -33,7 +33,11 @@ function List( busConnection, destination){
 		return processed
 	}
 	ask("/")
-	return aia(res)
+	return aia(res).then(filterForInterfaces)
+}
+
+function filterForInterfaces(all){
+	return all.filter(i=> i[1].interface)
 }
 
 module.exports= List

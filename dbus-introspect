@@ -4,9 +4,25 @@ var
   hello= require("./msg/hello"),
   List= require("./List")
 
-var
-  conn= dbus.createConnection()
+function connect(){
+	var
+	  conn= dbus.createConnection()
+	conn.message(hello())
+	return conn
+}
 
-conn.message(hello())
+function main(destination){
+	destination= destination|| "org.freedesktop.DBus"
+	var
+	  conn= connect(),
+	  l= List( conn, destination)
+	l.then(JSON.stringify).then(console.log)
+}
 
-var l= List( conn, "org.PulseAudio1").then(console.log.bind(null, "works"))
+module.exports= main
+module.exports.main= main
+module.exports.connect= connect
+
+if(require.main=== module){
+	module.exports.main()
+}
