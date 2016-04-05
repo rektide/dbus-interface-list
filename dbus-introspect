@@ -16,7 +16,7 @@ function main(destination){
 	var
 	  conn= connect(),
 	  l= List( conn, destination)
-	l.then(JSON.stringify).then(console.log)
+	l.then(JSON.stringify).then(console.log, console.error)
 }
 
 module.exports= main

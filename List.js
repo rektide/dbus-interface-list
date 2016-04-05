@@ -37,7 +37,20 @@ function List( busConnection, destination){
 }
 
 function filterForInterfaces(all){
-	return all.filter(i=> i[1].interface)
+	var result= []
+	for(var i of all){
+		var
+		  path= i[0]
+		  interfaces= i[1].interface
+		if(!interfaces){
+			continue
+		}
+		for(var interface of interfaces){
+			interface.$.path= path
+			result.push(interface)
+		}
+	}
+	return result
 }
 
 module.exports= List
