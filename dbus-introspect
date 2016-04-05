@@ -9,7 +9,7 @@ var
 
 conn.message(hello())
 
-List( conn, "org.PulseAudio1").subscribe(function(i){
+var l= List( conn, "org.PulseAudio1")
+l.subscribe(function(i){
 	console.log("I", i)
-})
-
+}, console.error.bind(null, "ohhat"), console.log.bind(null, "done"))
