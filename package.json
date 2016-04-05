@@ -18,9 +18,9 @@
 	"author": "rektide de la faye",
 	"license": "X",
 	"dependencies": {
+		"all-in-all": "^1.0.0",
 		"dbus-native": "^0.2.0",
 		"es6-promisify": "^4.0.0",
-		"rxjs": "^5.0.0-beta.4",
 		"xml2js": "^0.4.16"
 	}
 }
