@@ -1,22 +1,25 @@
 #!/usr/bin/env node
+"use strict"
 var
   dbus= require( "dbus-native"),
-  hello= require("./msg/hello"),
-  List= require("./List")
+  hello= require( "./msg/hello"),
+  List= require( "./List")
 
-function connect(){
+function connect( busAddress){
 	var
-	  conn= dbus.createConnection()
-	conn.message(hello())
+	  conn= dbus.createConnection( busAddress? {busAddress}: undefined)
+	conn.message( hello())
 	return conn
 }
 
-function main(destination){
-	destination= destination|| "org.freedesktop.DBus"
+function main( destination, busAddress, startPath){
+	destination= destination|| process.argv[2]|| "org.freedesktop.DBus"
+	busAddress= busAddress|| process.argv[3]|| undefined
+	startPath= startPath|| process.argv[4]
 	var
-	  conn= connect(),
-	  l= List( conn, destination)
-	l.then(JSON.stringify).then(console.log, console.error)
+	  conn= connect( busAddress),
+	  l= List( conn, destination, startPath)
+	l.then( JSON.stringify).then( console.log, console.error)
 }
 
 module.exports= main

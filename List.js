@@ -6,7 +6,8 @@ var
 
 var _resolved= Promise.resolve()
 
-function List( busConnection, destination){
+function List( busConnection, destination, startPath){
+	startPath= startPath|| "/"
 	var
 	  messager= Messager( busConnection),
 	  res= []
@@ -23,16 +24,16 @@ function List( busConnection, destination){
 				// explore subnodes
 				var
 				  subnodes= introspection.node.node,
-				  recursiveAsks= subnodes&& subnodes.map(node=> ask( path+ (path=== "/"? "": "/")+ node.$.name)),
+				  recursiveAsks= subnodes&& subnodes.map( node=> ask( path+ (path=== "/"? "": "/")+ node.$.name)),
 				  solution= recursiveAsks&& Promise.all( recursiveAsks)||  _resolved
 				return solution.then(function(){ return [path, introspection.node]})
 			  })
 			return replyExplored
 		  })
-		res.push(processed)
+		res.push( processed)
 		return processed
 	}
-	ask("/")
+	ask( startPath)
 	return aia(res).then(filterForInterfaces)
 }
 
