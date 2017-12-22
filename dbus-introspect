@@ -1,5 +1,14 @@
 #!/usr/bin/env node
 "use strict"
+
+function defer(opts){
+	if( !(this instanceof defer)){
+		return new defer( opts)
+	}
+	this.promise = new Promise(( resolve, reject)=> Object.assign(this, {resolve, reject}))
+}
+Promise.defer= defer
+
 var
   dbus= require( "dbus-native"),
   hello= require( "./msg/hello"),
